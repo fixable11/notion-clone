@@ -1,7 +1,12 @@
 import './App.css';
+import { Cover } from './Page/Cover.tsx';
 
 function App() {
-  return <>Notion clone</>;
+  return (
+    <>
+      <Cover />
+    </>
+  );
 }
 
 export default App;
