@@ -1,8 +1,10 @@
-import { NodeData } from '../utils/types.ts';
+import { NodeData, NodeType } from '../utils/types.ts';
 import styles from './Node.module.css';
 import { FormEventHandler, KeyboardEventHandler, useEffect, useRef } from 'react';
 import { nanoid } from 'nanoid';
 import { useAppState } from '../state/AppStateContext.tsx';
+import { CommandPanel } from './CommandPanel.tsx';
+import cx from 'classnames';
 
 type BasicNodeProps = {
   node: NodeData;
@@ -13,8 +15,9 @@ type BasicNodeProps = {
 
 export const BasicNode = ({ node, updateFocusedIndex, isFocused, index }: BasicNodeProps) => {
   const nodeRef = useRef<HTMLDivElement>(null);
+  const showCommandPanel = isFocused && node?.value?.match(/^\//);
 
-  const { changeNodeValue, addNode, removeNodeByIndex } = useAppState();
+  const { changeNodeValue, changeNodeType, addNode, removeNodeByIndex } = useAppState();
 
   useEffect(() => {
     if (isFocused) {
@@ -29,6 +32,13 @@ export const BasicNode = ({ node, updateFocusedIndex, isFocused, index }: BasicN
       nodeRef.current.textContent = node.value;
     }
   }, [node]);
+
+  const parseCommand = (nodeType: NodeType) => {
+    if (nodeRef.current) {
+      changeNodeType(index, nodeType);
+      nodeRef.current.textContent = '';
+    }
+  };
 
   const handleInput: FormEventHandler<HTMLDivElement> = ({ currentTarget }) => {
     const { textContent } = currentTarget;
@@ -63,13 +73,17 @@ export const BasicNode = ({ node, updateFocusedIndex, isFocused, index }: BasicN
   };
 
   return (
-    <div
-      className={styles.node}
-      onInput={handleInput}
-      onClick={handleClick}
-      onKeyDown={onKeyDown}
-      ref={nodeRef}
-      contentEditable={true}
-      suppressContentEditableWarning={true}></div>
+    <>
+      {showCommandPanel && <CommandPanel nodeText={node.value} selectItem={parseCommand} />}
+      <div
+        className={cx(styles.node, styles[node.type])}
+        onInput={handleInput}
+        onClick={handleClick}
+        onKeyDown={onKeyDown}
+        ref={nodeRef}
+        contentEditable={true}
+        suppressContentEditableWarning={true}
+      />
+    </>
   );
 };
