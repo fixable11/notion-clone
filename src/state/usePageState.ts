@@ -1,5 +1,7 @@
 import { NodeData, NodeType, Page } from '../utils/types.ts';
 import { useImmer } from 'use-immer';
+import { arrayMove } from '@dnd-kit/sortable';
+
 export const usePageState = (initialState: Page) => {
   const [page, setPage] = useImmer<Page>(initialState);
 
@@ -46,6 +48,14 @@ export const usePageState = (initialState: Page) => {
     });
   };
 
+  const reorderNodes = (id1: string, id2: string) => {
+    setPage((draft) => {
+      const index1 = draft.nodes.findIndex((node) => node.id === id1);
+      const index2 = draft.nodes.findIndex((node) => node.id === id2);
+      draft.nodes = arrayMove(draft.nodes, index1, index2);
+    });
+  };
+
   return {
     nodes: page.nodes,
     title: page.title,
@@ -56,6 +66,7 @@ export const usePageState = (initialState: Page) => {
     setTitle,
     setCoverImage,
     addNode,
-    removeNodeByIndex
+    removeNodeByIndex,
+    reorderNodes
   };
 };
