@@ -3,10 +3,9 @@ import { Page } from './Page/Page.tsx';
 import { AppStateProvider } from './state/AppStateContext.tsx';
 import { createPage } from './utils/createPage.ts';
 import { Route, Routes } from 'react-router-dom';
+import { Auth } from './auth/Auth.tsx';
 
 const initialState = createPage();
-
-const Auth = () => <div>Auth</div>;
 
 function App() {
   return (
