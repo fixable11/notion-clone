@@ -1,5 +1,6 @@
 import { NodeData, NodeType } from '../utils/types.ts';
 import { BasicNode } from './BasicNode.tsx';
+import { PageNode } from './PageNode.tsx';
 
 type NodeTypeSwitcherProps = {
   node: NodeData;
@@ -25,6 +26,10 @@ export const NodeTypeSwitcher = ({
         updateFocusedIndex={updateFocusedIndex}
       />
     );
+  }
+
+  if (node.type === 'page') {
+    return <PageNode node={node} index={index} isFocused={isFocused}></PageNode>;
   }
 
   return null;
