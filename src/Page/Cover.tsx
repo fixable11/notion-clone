@@ -1,19 +1,35 @@
 import { ChangeEventHandler, useRef } from 'react';
 import styles from './Cover.module.css';
-export const Cover = () => {
+import { FileImage } from '../components/FileImage.tsx';
+import { uploadImage } from '../utils/uploadImage.ts';
+
+uploadImage();
+
+type CoverProps = {
+  filePath?: string;
+  changePageCover: (filePath: string) => void;
+};
+export const Cover = ({ filePath, changePageCover }: CoverProps) => {
   const fileInputRef = useRef<HTMLInputElement>(null);
   const onChangeCoverImage = () => {
     fileInputRef?.current?.click();
   };
 
-  const onCoverImageUpload: ChangeEventHandler<HTMLInputElement> = (event) => {
+  const onCoverImageUpload: ChangeEventHandler<HTMLInputElement> = async (event) => {
     const target = event.target;
-    console.log(target?.files?.[0]);
+    const result = await uploadImage(target?.files?.[0]);
+    if (result?.filePath) {
+      changePageCover(result.filePath);
+    }
   };
 
   return (
     <div className={styles.cover}>
-      <img src="/notion-brand-logo.png" alt="Cover" className={styles.image} />
+      {filePath ? (
+        <FileImage filePath={filePath} className={styles.image}></FileImage>
+      ) : (
+        <img src="/notion-brand-logo.png" alt="Cover" className={styles.image} />
+      )}
       <button className={styles.button} onClick={onChangeCoverImage}>
         Change cover
       </button>

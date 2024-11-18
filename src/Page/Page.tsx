@@ -9,7 +9,7 @@ import { SortableContext, verticalListSortingStrategy } from '@dnd-kit/sortable'
 import { NodeContainer } from '../Node/NodeContainer.tsx';
 
 export const Page = () => {
-  const { title, nodes, addNode, setTitle, reorderNodes } = useAppState();
+  const { title, nodes, addNode, cover, setCoverImage, setTitle, reorderNodes } = useAppState();
 
   const [focusedNodeIndex, setFocusedNodeIndex] = useFocusedNodeIndex({
     nodes
@@ -24,7 +24,7 @@ export const Page = () => {
 
   return (
     <>
-      <Cover />
+      <Cover filePath={cover} changePageCover={setCoverImage} />
       <div>
         <Title title={title} addNode={addNode} changePageTitle={setTitle} />
         <DndContext onDragEnd={handleDragEvent}>
