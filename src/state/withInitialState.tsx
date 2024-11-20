@@ -32,6 +32,7 @@ export function withInitialState<TProps>(
           if (!user) {
             throw new Error('User is not logged in');
           }
+          console.log('User', user);
           const { data } = await supabase
             .from('pages')
             .select('title, id, cover, nodes, slug')
@@ -62,21 +63,21 @@ export function withInitialState<TProps>(
     }, [pageSlug]);
 
     if (isLoading) {
-      return (
-        <div className={styles.centeredFlex}>
-          <Loader></Loader>
-        </div>
+      return React.createElement(
+        'div',
+        { className: styles.centeredFlex },
+        React.createElement(Loader, null)
       );
     }
 
     if (error) {
-      return <div>{error.message}</div>;
+      return React.createElement('div', null, error.message);
     }
 
     if (!initialState) {
-      return <div className={styles.centeredFlex}>Page not found</div>;
+      return React.createElement('div', { className: styles.centeredFlex }, 'Page not found');
     }
 
-    return <WrappedComponent {...props} initialState={initialState} />;
+    return React.createElement(WrappedComponent, { ...props, initialState });
   };
 }
