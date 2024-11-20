@@ -10,8 +10,8 @@ export const useSyncedState = <TState>(
   useEffect(() => {
     if (didMountRef.current) {
       syncCallback(state);
-      didMountRef.current = true;
     }
+    didMountRef.current = true;
   }, [state, setState]);
 
   return [state, setState];

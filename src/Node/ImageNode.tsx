@@ -1,10 +1,10 @@
 import { NodeData } from '../utils/types.ts';
-import { ChangeEvent, useEffect, useRef } from 'react';
-import { useAppState } from '../state/AppStateContext.tsx';
+import { ChangeEvent, useContext, useEffect, useRef } from 'react';
 import cx from 'classnames';
 import styles from './Node.module.css';
 import { FileImage } from '../components/FileImage.tsx';
 import { uploadImage } from '../utils/uploadImage.ts';
+import { AppStateContext } from '../state/appContext.ts';
 
 type ImageNodeProps = {
   node: NodeData;
@@ -13,7 +13,7 @@ type ImageNodeProps = {
 };
 
 export const ImageNode = ({ node, isFocused, index }: ImageNodeProps) => {
-  const { removeNodeByIndex, changeNodeValue, changeNodeType } = useAppState();
+  const { removeNodeByIndex, changeNodeValue, changeNodeType } = useContext(AppStateContext);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
@@ -44,7 +44,7 @@ export const ImageNode = ({ node, isFocused, index }: ImageNodeProps) => {
   const onImageUpload = async (event: ChangeEvent<HTMLInputElement>) => {
     const target = event.target;
     if (!target.files) {
-      changeNodeType(index, 'text');
+      await changeNodeType(index, 'text');
     }
     try {
       const result = await uploadImage(target.files?.[0]);
@@ -53,7 +53,7 @@ export const ImageNode = ({ node, isFocused, index }: ImageNodeProps) => {
       }
     } catch (e) {
       console.error(e);
-      changeNodeType(index, 'text');
+      await changeNodeType(index, 'text');
     }
   };
 

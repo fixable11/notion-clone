@@ -3,8 +3,6 @@ import styles from './Cover.module.css';
 import { FileImage } from '../components/FileImage.tsx';
 import { uploadImage } from '../utils/uploadImage.ts';
 
-uploadImage();
-
 type CoverProps = {
   filePath?: string;
   changePageCover: (filePath: string) => void;

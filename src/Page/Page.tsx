@@ -3,13 +3,15 @@ import { Cover } from './Cover.tsx';
 import { Spacer } from './Spacer.tsx';
 import { Title } from './Title.tsx';
 import { nanoid } from 'nanoid';
-import { useAppState } from '../state/AppStateContext.tsx';
 import { DndContext, DragEndEvent, DragOverlay } from '@dnd-kit/core';
 import { SortableContext, verticalListSortingStrategy } from '@dnd-kit/sortable';
 import { NodeContainer } from '../Node/NodeContainer.tsx';
+import { useContext } from 'react';
+import { AppStateContext } from '../state/appContext.ts';
 
 export const Page = () => {
-  const { title, nodes, addNode, cover, setCoverImage, setTitle, reorderNodes } = useAppState();
+  const { title, nodes, addNode, cover, setCoverImage, setTitle, reorderNodes } =
+    useContext(AppStateContext);
 
   const [focusedNodeIndex, setFocusedNodeIndex] = useFocusedNodeIndex({
     nodes

@@ -1,13 +1,13 @@
-import { FormEvent, useState } from 'react';
-import { useAuthSession } from './AuthSessionContext.tsx';
+import { FormEvent, useContext, useState } from 'react';
 import { Navigate } from 'react-router-dom';
 import styles from '../utils.module.css';
 import { supabase } from '../supabaseClient.ts';
+import { AuthSessionContext } from './authContext.ts';
 
 export const Auth = () => {
   const [loading, setLoading] = useState(false);
   const [email, setEmail] = useState('');
-  const { session } = useAuthSession();
+  const { session } = useContext(AuthSessionContext);
 
   const handleLogin = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();

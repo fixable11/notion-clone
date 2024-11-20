@@ -1,10 +1,10 @@
 import { NodeData } from '../utils/types.ts';
 import { useNavigate } from 'react-router-dom';
-import { useEffect, useState } from 'react';
-import { useAppState } from '../state/AppStateContext.tsx';
+import { useContext, useEffect, useState } from 'react';
 import { supabase } from '../supabaseClient.ts';
 import cx from 'classnames';
 import styles from './Node.module.css';
+import { AppStateContext } from '../state/appContext.ts';
 
 type PageNodeProps = {
   node: NodeData;
@@ -15,7 +15,7 @@ type PageNodeProps = {
 export const PageNode = ({ node, isFocused, index }: PageNodeProps) => {
   const navigate = useNavigate();
   const [pageTitle, setPageTitle] = useState('');
-  const { removeNodeByIndex } = useAppState();
+  const { removeNodeByIndex } = useContext(AppStateContext);
 
   useEffect(() => {
     const handleKeyDown = (event: KeyboardEvent) => {
@@ -56,7 +56,7 @@ export const PageNode = ({ node, isFocused, index }: PageNodeProps) => {
       className={cx(styles.node, styles.page, {
         [styles.focused]: isFocused
       })}>
-      {pageTitle}
+      📄 {pageTitle}
     </div>
   );
 };

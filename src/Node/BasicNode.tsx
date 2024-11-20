@@ -1,10 +1,10 @@
 import { NodeData, NodeType } from '../utils/types.ts';
 import styles from './Node.module.css';
-import { FormEventHandler, KeyboardEventHandler, useEffect, useRef } from 'react';
+import { FormEventHandler, KeyboardEventHandler, useContext, useEffect, useRef } from 'react';
 import { nanoid } from 'nanoid';
-import { useAppState } from '../state/AppStateContext.tsx';
 import { CommandPanel } from './CommandPanel.tsx';
 import cx from 'classnames';
+import { AppStateContext } from '../state/appContext.ts';
 
 type BasicNodeProps = {
   node: NodeData;
@@ -17,7 +17,8 @@ export const BasicNode = ({ node, updateFocusedIndex, isFocused, index }: BasicN
   const nodeRef = useRef<HTMLDivElement>(null);
   const showCommandPanel = isFocused && node?.value?.match(/^\//);
 
-  const { changeNodeValue, changeNodeType, addNode, removeNodeByIndex } = useAppState();
+  const { changeNodeValue, changeNodeType, addNode, removeNodeByIndex } =
+    useContext(AppStateContext);
 
   useEffect(() => {
     if (isFocused) {
