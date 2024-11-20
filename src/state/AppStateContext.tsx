@@ -12,7 +12,6 @@ export type AppStateContextType = ReturnType<typeof usePageState>;
 
 type AppStateProviderProps = {
   children: ReactNode;
-  // initialState: Page;
 };
 
 export const AppStateProvider = ({ children }: AppStateProviderProps) => {
@@ -57,8 +56,6 @@ export const AppStateProvider = ({ children }: AppStateProviderProps) => {
         setInitialState(result.data!);
       } else {
         setInitialState(serverState || defaultPage);
-        console.log('serverState', serverState);
-        console.log('initialState', initialState);
       }
     } catch (e) {
       if (e instanceof Error) {
@@ -73,11 +70,7 @@ export const AppStateProvider = ({ children }: AppStateProviderProps) => {
     fetchInitialState();
   }, [pageSlug]);
 
-  console.log('RENDER', initialState);
-
   const pageStateHandlers = usePageState(initialState || defaultPage);
-
-  setTimeout(() => console.log('pageStateHandlers', pageStateHandlers.page, 3000), 3000);
 
   if (isLoading) {
     return (
